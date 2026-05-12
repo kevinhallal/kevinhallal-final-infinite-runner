@@ -57,4 +57,11 @@ if (currentScore > HighScore)
 
         Debug.Log("Game Over! Final Score: " + Mathf.FloorToInt(Distance));
     }
+    public int Coins { get; private set; }
+
+public void AddCoin()
+{
+    Coins++;
+    Debug.Log("Coins: " + Coins);
+}
 }
