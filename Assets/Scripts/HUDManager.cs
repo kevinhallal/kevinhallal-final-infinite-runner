@@ -4,6 +4,7 @@ using UnityEngine;
 public class HUDManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private TMP_Text highScoreText;
 
     void Update()
     {
@@ -11,5 +12,6 @@ public class HUDManager : MonoBehaviour
 
         int score = Mathf.FloorToInt(GameManager.Instance.Distance);
         scoreText.text = "Score: " + score;
+        highScoreText.text = "High Score: " + GameManager.Instance.HighScore;
     }
 }
