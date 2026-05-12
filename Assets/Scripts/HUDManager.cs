@@ -15,6 +15,7 @@ public class HUDManager : MonoBehaviour
         scoreText.text = "Score: " + score;
         highScoreText.text = "High Score: " + GameManager.Instance.HighScore;
         if (coinText != null)
-    coinText.text = "Coins: " + GameManager.Instance.Coins;
+   coinText.text = "Coins: " + GameManager.Instance.RunCoins 
+              + " | Total: " + GameManager.Instance.TotalCoins;
     }
 }

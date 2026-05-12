@@ -9,10 +9,14 @@ public class GameManager : MonoBehaviour
 
     public float ScrollSpeed { get; private set; }
     public float Distance { get; private set; }
+    public int RunCoins { get; private set; }
+public int TotalCoins { get; private set; }
     public bool IsGameOver { get; private set; }
+    
 public int HighScore { get; private set; }
     void Awake()
     {
+        TotalCoins = PlayerPrefs.GetInt("TotalCoins", 0);
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         ScrollSpeed = config.startSpeed;
@@ -57,11 +61,16 @@ if (currentScore > HighScore)
 
         Debug.Log("Game Over! Final Score: " + Mathf.FloorToInt(Distance));
     }
-    public int Coins { get; private set; }
+   
 
 public void AddCoin()
 {
-    Coins++;
-    Debug.Log("Coins: " + Coins);
+    RunCoins++;
+    TotalCoins++;
+
+    PlayerPrefs.SetInt("TotalCoins", TotalCoins);
+    PlayerPrefs.Save();
+
+    Debug.Log("Run Coins: " + RunCoins + " | Total Coins: " + TotalCoins);
 }
 }
