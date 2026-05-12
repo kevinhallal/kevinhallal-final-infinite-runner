@@ -61,7 +61,7 @@ void Start()
                 Recycle(i);
         }
     }
-    private void SpawnStartChunk()
+private void SpawnStartChunk()
 {
     if (startChunkPrefab == null)
     {
@@ -77,6 +77,10 @@ void Start()
         Quaternion.identity);
 
     _activeChunks.Add(chunk);
+
+    // 🔥 THIS LINE FIXES THE ERROR
+    _instanceToPrefab[chunk] = startChunkPrefab;
+
     _spawnZ += chunk.Length;
     _currentExit = chunk.Exit;
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -17,14 +18,25 @@ public class GameManager : MonoBehaviour
         ScrollSpeed = config.startSpeed;
     }
 
-    void Update()
+   void Update()
+{
+    if (IsGameOver)
     {
-        if (IsGameOver) return;
+        if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
 
-        ScrollSpeed = Mathf.Min(ScrollSpeed + config.speedIncreaseRate * Time.deltaTime, config.maxSpeed);
-        Distance += ScrollSpeed * Time.deltaTime;
+        return;
     }
 
+    ScrollSpeed = Mathf.Min(
+        ScrollSpeed + config.speedIncreaseRate * Time.deltaTime,
+        config.maxSpeed
+    );
+
+    Distance += ScrollSpeed * Time.deltaTime;
+}
     public void GameOver()
     {
         if (IsGameOver) return;

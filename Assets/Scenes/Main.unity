@@ -499,6 +499,79 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ca0b3ebd5ce84f418cdb6ca1acc40c6, type: 3}
+--- !u!114 &568977081 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4253972718531726724, guid: 517932deb26594102a6561c2e7d1847b, type: 3}
+  m_PrefabInstance: {fileID: 661633192}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dff46c129df2479fa560e1e7a97151a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Chunk
+--- !u!1001 &661633192
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4141135045849792012, guid: 517932deb26594102a6561c2e7d1847b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4141135045849792012, guid: 517932deb26594102a6561c2e7d1847b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4141135045849792012, guid: 517932deb26594102a6561c2e7d1847b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4141135045849792012, guid: 517932deb26594102a6561c2e7d1847b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4141135045849792012, guid: 517932deb26594102a6561c2e7d1847b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4141135045849792012, guid: 517932deb26594102a6561c2e7d1847b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4141135045849792012, guid: 517932deb26594102a6561c2e7d1847b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4141135045849792012, guid: 517932deb26594102a6561c2e7d1847b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4141135045849792012, guid: 517932deb26594102a6561c2e7d1847b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4141135045849792012, guid: 517932deb26594102a6561c2e7d1847b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6230059130620351680, guid: 517932deb26594102a6561c2e7d1847b, type: 3}
+      propertyPath: m_Name
+      value: Chunk_Start
+      objectReference: {fileID: 0}
+    - target: {fileID: 6230059130620351680, guid: 517932deb26594102a6561c2e7d1847b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects:
+    - {fileID: 7447576052198095038, guid: 517932deb26594102a6561c2e7d1847b, type: 3}
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 517932deb26594102a6561c2e7d1847b, type: 3}
 --- !u!1001 &697971237
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -730,6 +803,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36f460430b1614e63937a78aa2e962ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelGenerator
+  startChunkPrefab: {fileID: 568977081}
   chunkPrefabs:
   - {fileID: 53845519711498772, guid: 9803300084fe4418d90b7e6a603d0cbf, type: 3}
   - {fileID: 6230059130620351680, guid: 7ca0b3ebd5ce84f418cdb6ca1acc40c6, type: 3}
@@ -1198,7 +1272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6230059130620351680, guid: 1061128312916450eb2d3aa8afb40be9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1342,6 +1416,7 @@ SceneRoots:
   - {fileID: 5456642353072778212}
   - {fileID: 697971237}
   - {fileID: 1432255425}
+  - {fileID: 661633192}
   - {fileID: 2502602727119859059}
   - {fileID: 1527225048443368935}
   - {fileID: 6383060185856122131}
