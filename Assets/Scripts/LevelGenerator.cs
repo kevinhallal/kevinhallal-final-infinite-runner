@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
+    
+[SerializeField] private Chunk startChunkPrefab;
     [Header("Chunks")]
     [SerializeField] private GameObject[] chunkPrefabs;
     [SerializeField] private int chunkPoolSize = 3;
@@ -31,10 +33,13 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        while (_spawnZ < spawnAhead) SpawnNextChunk();
-    }
+void Start()
+{
+    SpawnStartChunk();
+
+    while (_spawnZ < spawnAhead)
+        SpawnNextChunk();
+}
 
     void Update()
     {
@@ -56,6 +61,25 @@ public class LevelGenerator : MonoBehaviour
                 Recycle(i);
         }
     }
+    private void SpawnStartChunk()
+{
+    if (startChunkPrefab == null)
+    {
+        Debug.LogWarning("No start chunk assigned, using random first chunk.");
+        SpawnNextChunk();
+        return;
+    }
+
+    Chunk chunk = Instantiate(startChunkPrefab, transform);
+
+    chunk.transform.SetPositionAndRotation(
+        new Vector3(0f, 0f, _spawnZ + chunk.Length * 0.5f),
+        Quaternion.identity);
+
+    _activeChunks.Add(chunk);
+    _spawnZ += chunk.Length;
+    _currentExit = chunk.Exit;
+}
 
     private void SpawnNextChunk()
     {
