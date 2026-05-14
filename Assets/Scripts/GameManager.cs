@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameConfig config;
 
     [Header("Speed Boost Powerup")]
-    [SerializeField] private int speedBoostCost = 10;
     [SerializeField] private float speedBoostAmount = 8f;
     [SerializeField] private float speedBoostDuration = 5f;
 
@@ -18,7 +17,6 @@ public class GameManager : MonoBehaviour
     private float speedBoostTimer;
 
     [Header("Magnet Powerup")]
-    [SerializeField] private int magnetCost = 15;
     [SerializeField] private float magnetDuration = 6f;
     [SerializeField] private float magnetRadius = 6f;
     [SerializeField] private float magnetPullSpeed = 12f;
@@ -27,7 +25,6 @@ public class GameManager : MonoBehaviour
     private float magnetTimer;
 
     [Header("Invincibility Powerup")]
-    [SerializeField] private int invincibilityCost = 20;
     [SerializeField] private float invincibilityDuration = 5f;
 
     private bool isInvincible;
@@ -41,6 +38,10 @@ public class GameManager : MonoBehaviour
     public int RunCoins { get; private set; }
     public int TotalCoins { get; private set; }
 
+    public int SpeedBoostCount { get; private set; }
+    public int MagnetCount { get; private set; }
+    public int InvincibilityCount { get; private set; }
+
     public bool IsGameOver { get; private set; }
 
     public int HighScore { get; private set; }
@@ -48,6 +49,15 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         TotalCoins = PlayerPrefs.GetInt("TotalCoins", 0);
+
+        SpeedBoostCount =
+            PlayerPrefs.GetInt("SpeedBoostCount", 0);
+
+        MagnetCount =
+            PlayerPrefs.GetInt("MagnetCount", 0);
+
+        InvincibilityCount =
+            PlayerPrefs.GetInt("InvincibilityCount", 0);
 
         if (Instance != null && Instance != this)
         {
@@ -58,6 +68,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
 
         ScrollSpeed = config.startSpeed;
+
         HighScore = PlayerPrefs.GetInt("HighScore", 0);
     }
 
@@ -76,6 +87,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        // TEST KEYS
         if (Keyboard.current != null &&
             Keyboard.current.bKey.wasPressedThisFrame)
         {
@@ -141,6 +153,7 @@ public class GameManager : MonoBehaviour
         if (magnetTimer <= 0f)
         {
             isMagnetActive = false;
+
             Debug.Log("Magnet ended.");
         }
     }
@@ -154,6 +167,7 @@ public class GameManager : MonoBehaviour
         if (invincibilityTimer <= 0f)
         {
             isInvincible = false;
+
             Debug.Log("Invincibility ended.");
         }
     }
@@ -162,14 +176,20 @@ public class GameManager : MonoBehaviour
     {
         if (isSpeedBoostActive) return;
 
-        if (TotalCoins < speedBoostCost)
+        if (SpeedBoostCount <= 0)
         {
-            Debug.Log("Not enough coins for speed boost.");
+            Debug.Log("No speed boosts owned.");
             return;
         }
 
-        TotalCoins -= speedBoostCost;
-        SaveTotalCoins();
+        SpeedBoostCount--;
+
+        PlayerPrefs.SetInt(
+            "SpeedBoostCount",
+            SpeedBoostCount
+        );
+
+        PlayerPrefs.Save();
 
         isSpeedBoostActive = true;
         speedBoostTimer = speedBoostDuration;
@@ -183,14 +203,20 @@ public class GameManager : MonoBehaviour
     {
         if (isMagnetActive) return;
 
-        if (TotalCoins < magnetCost)
+        if (MagnetCount <= 0)
         {
-            Debug.Log("Not enough coins for magnet.");
+            Debug.Log("No magnets owned.");
             return;
         }
 
-        TotalCoins -= magnetCost;
-        SaveTotalCoins();
+        MagnetCount--;
+
+        PlayerPrefs.SetInt(
+            "MagnetCount",
+            MagnetCount
+        );
+
+        PlayerPrefs.Save();
 
         isMagnetActive = true;
         magnetTimer = magnetDuration;
@@ -202,14 +228,20 @@ public class GameManager : MonoBehaviour
     {
         if (isInvincible) return;
 
-        if (TotalCoins < invincibilityCost)
+        if (InvincibilityCount <= 0)
         {
-            Debug.Log("Not enough coins for invincibility.");
+            Debug.Log("No invincibility powerups owned.");
             return;
         }
 
-        TotalCoins -= invincibilityCost;
-        SaveTotalCoins();
+        InvincibilityCount--;
+
+        PlayerPrefs.SetInt(
+            "InvincibilityCount",
+            InvincibilityCount
+        );
+
+        PlayerPrefs.Save();
 
         isInvincible = true;
         invincibilityTimer = invincibilityDuration;
@@ -247,22 +279,34 @@ public class GameManager : MonoBehaviour
 
         if (isInvincible)
         {
-            Debug.Log("Game over ignored because player is invincible.");
+            Debug.Log(
+                "Game over ignored because player is invincible."
+            );
+
             return;
         }
 
         IsGameOver = true;
+
         ScrollSpeed = 0f;
 
-        int currentScore = Mathf.FloorToInt(Distance);
+        int currentScore =
+            Mathf.FloorToInt(Distance);
 
         if (currentScore > HighScore)
         {
             HighScore = currentScore;
-            PlayerPrefs.SetInt("HighScore", HighScore);
+
+            PlayerPrefs.SetInt(
+                "HighScore",
+                HighScore
+            );
+
             PlayerPrefs.Save();
 
-            Debug.Log("New High Score: " + HighScore);
+            Debug.Log(
+                "New High Score: " + HighScore
+            );
         }
 
         Debug.Log(
@@ -291,7 +335,11 @@ public class GameManager : MonoBehaviour
 
     private void SaveTotalCoins()
     {
-        PlayerPrefs.SetInt("TotalCoins", TotalCoins);
+        PlayerPrefs.SetInt(
+            "TotalCoins",
+            TotalCoins
+        );
+
         PlayerPrefs.Save();
     }
 }
