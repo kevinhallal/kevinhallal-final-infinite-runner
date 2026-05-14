@@ -1615,10 +1615,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   gameOverPanel: {fileID: 1200342117}
-  speedBoostCost: 10
+  config: {fileID: 11400000, guid: 75ea4c543ed1047279c376078ae72761, type: 2}
   speedBoostAmount: 8
   speedBoostDuration: 5
-  config: {fileID: 11400000, guid: 75ea4c543ed1047279c376078ae72761, type: 2}
+  magnetDuration: 6
+  magnetRadius: 6
+  magnetPullSpeed: 12
+  invincibilityDuration: 5
 --- !u!4 &1040051715
 Transform:
   m_ObjectHideFlags: 0
