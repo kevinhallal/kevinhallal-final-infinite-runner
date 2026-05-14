@@ -55,23 +55,31 @@ public class HUDManager : MonoBehaviour
 
     private void UpdatePowerupUI()
     {
-        // SPEED BOOST
-        if (GameManager.Instance.IsSpeedBoostActive)
-        {
-            speedBoostAmountText.text =
-                GameManager.Instance.SpeedBoostTimeLeft.ToString("0.0") + "s";
+       // SPEED BOOST
+if (GameManager.Instance.IsGameOver)
+{
+    if (speedEffectOverlay != null)
+        speedEffectOverlay.SetActive(false);
 
-            if (speedEffectOverlay != null)
-                speedEffectOverlay.SetActive(true);
-        }
-        else
-        {
-            speedBoostAmountText.text =
-                "x" + GameManager.Instance.SpeedBoostCount;
+    speedBoostAmountText.text =
+        "x" + GameManager.Instance.SpeedBoostCount;
+}
+else if (GameManager.Instance.IsSpeedBoostActive)
+{
+    speedBoostAmountText.text =
+        GameManager.Instance.SpeedBoostTimeLeft.ToString("0.0") + "s";
 
-            if (speedEffectOverlay != null)
-                speedEffectOverlay.SetActive(false);
-        }
+    if (speedEffectOverlay != null)
+        speedEffectOverlay.SetActive(true);
+}
+else
+{
+    speedBoostAmountText.text =
+        "x" + GameManager.Instance.SpeedBoostCount;
+
+    if (speedEffectOverlay != null)
+        speedEffectOverlay.SetActive(false);
+}
 
         // MAGNET
         if (GameManager.Instance.IsMagnetActive)
