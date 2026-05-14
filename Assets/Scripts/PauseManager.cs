@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour
 {
@@ -22,7 +23,8 @@ public class PauseManager : MonoBehaviour
             return;
         }
 
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        if (Keyboard.current != null &&
+            Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             TogglePause();
         }
@@ -30,7 +32,8 @@ public class PauseManager : MonoBehaviour
 
     public void TogglePause()
     {
-        if (GameManager.Instance != null && GameManager.Instance.IsGameOver)
+        if (GameManager.Instance != null &&
+            GameManager.Instance.IsGameOver)
             return;
 
         isPaused = !isPaused;
@@ -39,5 +42,21 @@ public class PauseManager : MonoBehaviour
 
         if (pauseUI != null)
             pauseUI.SetActive(isPaused);
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene(
+            SceneManager.GetActiveScene().buildIndex
+        );
+    }
+
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene("MainMenu");
     }
 }

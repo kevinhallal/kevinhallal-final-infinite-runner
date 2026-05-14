@@ -30,7 +30,7 @@ public class ShopManager : MonoBehaviour
 
     private void UpdateUI()
     {
-        totalCoinsText.text = "Total Coins: " + totalCoins;
+        totalCoinsText.text = "" + totalCoins;
     }
 
     public void BuySpeedBoost()

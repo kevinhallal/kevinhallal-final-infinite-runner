@@ -16,10 +16,10 @@ public class GameOverUI : MonoBehaviour
             );
 
             finalScoreText.text =
-                "Score: " + score;
+                "" + score;
 
             runCoinsText.text =
-                "Coins: " + GameManager.Instance.RunCoins;
+                "" + GameManager.Instance.RunCoins;
         }
     }
 
