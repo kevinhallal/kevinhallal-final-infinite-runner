@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class HUDManager : MonoBehaviour
 {
+    [SerializeField] private Animator speedAnimator;
+[SerializeField] private Animator magnetAnimator;
+[SerializeField] private Animator invincibilityAnimator;
     [SerializeField] private TMP_Text speedBoostAmountText;
 [SerializeField] private TMP_Text magnetAmountText;
 [SerializeField] private TMP_Text invincibilityAmountText;
@@ -25,4 +28,18 @@ invincibilityAmountText.text = "x" + GameManager.Instance.InvincibilityCount;
               + " | Total: " + GameManager.Instance.TotalCoins;
               
     }
+    public void PlaySpeedBoostEffect()
+{
+    speedAnimator.Play("PowerupBounce", 0, 0f);
+}
+
+public void PlayMagnetEffect()
+{
+    magnetAnimator.Play("PowerupBounce", 0, 0f);
+}
+
+public void PlayInvincibilityEffect()
+{
+    invincibilityAnimator.Play("PowerupBounce", 0, 0f);
+}
 }

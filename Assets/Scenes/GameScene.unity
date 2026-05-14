@@ -659,6 +659,7 @@ GameObject:
   - component: {fileID: 296848529}
   - component: {fileID: 296848531}
   - component: {fileID: 296848530}
+  - component: {fileID: 296848532}
   m_Layer: 5
   m_Name: SpeedBoostBanner
   m_TagString: Untagged
@@ -724,6 +725,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 296848528}
   m_CullTransparentMesh: 1
+--- !u!95 &296848532
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296848528}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 95d2dc31d0679b1488f4779ae72f1298, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1433,6 +1456,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a59e9824ba302d47a2c329590bc4089, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HUDManager
+  speedAnimator: {fileID: 296848532}
+  magnetAnimator: {fileID: 897421565}
+  invincibilityAnimator: {fileID: 1143550921}
   speedBoostAmountText: {fileID: 1407705030}
   magnetAmountText: {fileID: 485768747}
   invincibilityAmountText: {fileID: 2080897360}
@@ -1541,6 +1567,7 @@ GameObject:
   - component: {fileID: 897421562}
   - component: {fileID: 897421564}
   - component: {fileID: 897421563}
+  - component: {fileID: 897421565}
   m_Layer: 5
   m_Name: MagnetBanner
   m_TagString: Untagged
@@ -1606,6 +1633,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 897421561}
   m_CullTransparentMesh: 1
+--- !u!95 &897421565
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897421561}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 95d2dc31d0679b1488f4779ae72f1298, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1040051713
 GameObject:
   m_ObjectHideFlags: 0
@@ -1716,6 +1765,7 @@ GameObject:
   - component: {fileID: 1143550918}
   - component: {fileID: 1143550920}
   - component: {fileID: 1143550919}
+  - component: {fileID: 1143550921}
   m_Layer: 5
   m_Name: InvincibilityBanner
   m_TagString: Untagged
@@ -1781,6 +1831,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1143550917}
   m_CullTransparentMesh: 1
+--- !u!95 &1143550921
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143550917}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 95d2dc31d0679b1488f4779ae72f1298, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1200342117
 GameObject:
   m_ObjectHideFlags: 0

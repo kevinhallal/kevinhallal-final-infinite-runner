@@ -140,6 +140,7 @@ public class GameManager : MonoBehaviour
 
             Debug.Log("Speed Boost ended.");
         }
+        
     }
 
     private void UpdateMagnet()
@@ -197,6 +198,8 @@ public class GameManager : MonoBehaviour
         ScrollSpeed += speedBoostAmount;
 
         Debug.Log("Speed Boost activated!");
+        FindFirstObjectByType<HUDManager>()
+    ?.PlaySpeedBoostEffect();
     }
 
     public void ActivateMagnet()
@@ -222,6 +225,8 @@ public class GameManager : MonoBehaviour
         magnetTimer = magnetDuration;
 
         Debug.Log("Magnet activated!");
+        FindFirstObjectByType<HUDManager>()
+    ?.PlayMagnetEffect();
     }
 
     public void ActivateInvincibility()
@@ -247,6 +252,8 @@ public class GameManager : MonoBehaviour
         invincibilityTimer = invincibilityDuration;
 
         Debug.Log("Invincibility activated!");
+        FindFirstObjectByType<HUDManager>()
+    ?.PlayInvincibilityEffect();
     }
 
     private void PullCoinsToPlayer()
