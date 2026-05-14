@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private GameObject shieldVisual;
     [SerializeField] private GameObject magnetVisual;
 
     public bool IsSpeedBoostActive => isSpeedBoostActive;
@@ -58,6 +59,9 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        if (shieldVisual != null)
+    shieldVisual.SetActive(false);
+    
         if (magnetVisual != null)
             magnetVisual.SetActive(false);
 
@@ -159,6 +163,8 @@ public class GameManager : MonoBehaviour
 
         if (invincibilityTimer <= 0f)
         {
+            if (shieldVisual != null)
+    shieldVisual.SetActive(false);
             isInvincible = false;
             Debug.Log("Invincibility ended.");
         }
@@ -230,6 +236,9 @@ public class GameManager : MonoBehaviour
         isInvincible = true;
         invincibilityTimer = invincibilityDuration;
 
+        if (shieldVisual != null)
+    shieldVisual.SetActive(true);
+
         Debug.Log("Invincibility activated!");
 
         FindFirstObjectByType<HUDManager>()?.PlayInvincibilityEffect();
@@ -260,6 +269,9 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (shieldVisual != null)
+    shieldVisual.SetActive(false);
+
         if (IsGameOver) return;
 
         if (magnetVisual != null)
