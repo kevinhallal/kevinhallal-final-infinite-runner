@@ -4,16 +4,26 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameObject gameOverPanel;
     public static GameManager Instance { get; private set; }
 
-    [Header("Powerups")]
+    [SerializeField] private GameObject gameOverPanel;
+
+    [Header("Speed Boost Powerup")]
     [SerializeField] private int speedBoostCost = 10;
     [SerializeField] private float speedBoostAmount = 8f;
     [SerializeField] private float speedBoostDuration = 5f;
 
     private bool isSpeedBoostActive;
     private float speedBoostTimer;
+
+    [Header("Magnet Powerup")]
+    [SerializeField] private int magnetCost = 15;
+    [SerializeField] private float magnetDuration = 6f;
+    [SerializeField] private float magnetRadius = 6f;
+    [SerializeField] private float magnetPullSpeed = 12f;
+
+    private bool isMagnetActive;
+    private float magnetTimer;
 
     [SerializeField] private GameConfig config;
 
@@ -58,10 +68,18 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        // SPEED BOOST TEST KEY
         if (Keyboard.current != null &&
             Keyboard.current.bKey.wasPressedThisFrame)
         {
             ActivateSpeedBoost();
+        }
+
+        // MAGNET TEST KEY
+        if (Keyboard.current != null &&
+            Keyboard.current.mKey.wasPressedThisFrame)
+        {
+            ActivateMagnet();
         }
 
         float targetMaxSpeed =
@@ -76,6 +94,7 @@ public class GameManager : MonoBehaviour
 
         Distance += ScrollSpeed * Time.deltaTime;
 
+        // SPEED BOOST TIMER
         if (isSpeedBoostActive)
         {
             speedBoostTimer -= Time.deltaTime;
@@ -90,6 +109,21 @@ public class GameManager : MonoBehaviour
                 );
 
                 Debug.Log("Speed Boost ended.");
+            }
+        }
+
+        // MAGNET TIMER
+        if (isMagnetActive)
+        {
+            magnetTimer -= Time.deltaTime;
+
+            PullCoinsToPlayer();
+
+            if (magnetTimer <= 0f)
+            {
+                isMagnetActive = false;
+
+                Debug.Log("Magnet ended.");
             }
         }
     }
@@ -117,6 +151,51 @@ public class GameManager : MonoBehaviour
         Debug.Log("Speed Boost activated!");
     }
 
+    public void ActivateMagnet()
+    {
+        if (isMagnetActive) return;
+
+        if (TotalCoins < magnetCost)
+        {
+            Debug.Log("Not enough coins for magnet.");
+            return;
+        }
+
+        TotalCoins -= magnetCost;
+
+        PlayerPrefs.SetInt("TotalCoins", TotalCoins);
+        PlayerPrefs.Save();
+
+        isMagnetActive = true;
+        magnetTimer = magnetDuration;
+
+        Debug.Log("Magnet activated!");
+    }
+
+    private void PullCoinsToPlayer()
+    {
+        GameObject player =
+            GameObject.FindGameObjectWithTag("Player");
+
+        if (player == null) return;
+
+        Collider[] colliders = Physics.OverlapSphere(
+            player.transform.position,
+            magnetRadius
+        );
+
+        foreach (Collider col in colliders)
+        {
+            if (!col.CompareTag("Coin")) continue;
+
+            col.transform.position = Vector3.MoveTowards(
+                col.transform.position,
+                player.transform.position,
+                magnetPullSpeed * Time.deltaTime
+            );
+        }
+    }
+
     public void GameOver()
     {
         if (IsGameOver) return;
@@ -140,10 +219,11 @@ public class GameManager : MonoBehaviour
             "Game Over! Final Score: " +
             Mathf.FloorToInt(Distance)
         );
+
         if (gameOverPanel != null)
         {
-         gameOverPanel.SetActive(true);
-                }
+            gameOverPanel.SetActive(true);
+        }
     }
 
     public void AddCoin()
