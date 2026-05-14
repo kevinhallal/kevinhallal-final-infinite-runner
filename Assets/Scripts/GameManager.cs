@@ -4,13 +4,16 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
-    public bool IsSpeedBoostActive => isSpeedBoostActive;
-public bool IsMagnetActive => isMagnetActive;
-public bool IsInvincibilityActive => isInvincible;
+    [SerializeField] private GameObject magnetVisual;
 
-public float SpeedBoostTimeLeft => speedBoostTimer;
-public float MagnetTimeLeft => magnetTimer;
-public float InvincibilityTimeLeft => invincibilityTimer;
+    public bool IsSpeedBoostActive => isSpeedBoostActive;
+    public bool IsMagnetActive => isMagnetActive;
+    public bool IsInvincibilityActive => isInvincible;
+
+    public float SpeedBoostTimeLeft => speedBoostTimer;
+    public float MagnetTimeLeft => magnetTimer;
+    public float InvincibilityTimeLeft => invincibilityTimer;
+
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private GameObject gameOverPanel;
@@ -55,16 +58,14 @@ public float InvincibilityTimeLeft => invincibilityTimer;
 
     void Awake()
     {
+        if (magnetVisual != null)
+            magnetVisual.SetActive(false);
+
         TotalCoins = PlayerPrefs.GetInt("TotalCoins", 0);
 
-        SpeedBoostCount =
-            PlayerPrefs.GetInt("SpeedBoostCount", 0);
-
-        MagnetCount =
-            PlayerPrefs.GetInt("MagnetCount", 0);
-
-        InvincibilityCount =
-            PlayerPrefs.GetInt("InvincibilityCount", 0);
+        SpeedBoostCount = PlayerPrefs.GetInt("SpeedBoostCount", 0);
+        MagnetCount = PlayerPrefs.GetInt("MagnetCount", 0);
+        InvincibilityCount = PlayerPrefs.GetInt("InvincibilityCount", 0);
 
         if (Instance != null && Instance != this)
         {
@@ -73,9 +74,7 @@ public float InvincibilityTimeLeft => invincibilityTimer;
         }
 
         Instance = this;
-
         ScrollSpeed = config.startSpeed;
-
         HighScore = PlayerPrefs.GetInt("HighScore", 0);
     }
 
@@ -83,38 +82,24 @@ public float InvincibilityTimeLeft => invincibilityTimer;
     {
         if (IsGameOver)
         {
-            if (Keyboard.current != null &&
-                Keyboard.current.rKey.wasPressedThisFrame)
+            if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
             {
-                SceneManager.LoadScene(
-                    SceneManager.GetActiveScene().buildIndex
-                );
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
 
             return;
         }
 
-        // TEST KEYS
-        if (Keyboard.current != null &&
-            Keyboard.current.bKey.wasPressedThisFrame)
-        {
+        if (Keyboard.current != null && Keyboard.current.bKey.wasPressedThisFrame)
             ActivateSpeedBoost();
-        }
 
-        if (Keyboard.current != null &&
-            Keyboard.current.mKey.wasPressedThisFrame)
-        {
+        if (Keyboard.current != null && Keyboard.current.mKey.wasPressedThisFrame)
             ActivateMagnet();
-        }
 
-        if (Keyboard.current != null &&
-            Keyboard.current.iKey.wasPressedThisFrame)
-        {
+        if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
             ActivateInvincibility();
-        }
 
-        float targetMaxSpeed =
-            isSpeedBoostActive
+        float targetMaxSpeed = isSpeedBoostActive
             ? config.maxSpeed + speedBoostAmount
             : config.maxSpeed;
 
@@ -139,20 +124,17 @@ public float InvincibilityTimeLeft => invincibilityTimer;
         if (speedBoostTimer <= 0f)
         {
             isSpeedBoostActive = false;
-
-            ScrollSpeed = Mathf.Min(
-                ScrollSpeed,
-                config.maxSpeed
-            );
-
+            ScrollSpeed = Mathf.Min(ScrollSpeed, config.maxSpeed);
             Debug.Log("Speed Boost ended.");
         }
-        
     }
 
     private void UpdateMagnet()
     {
         if (!isMagnetActive) return;
+
+        if (magnetVisual != null)
+            magnetVisual.SetActive(true);
 
         magnetTimer -= Time.deltaTime;
 
@@ -161,6 +143,9 @@ public float InvincibilityTimeLeft => invincibilityTimer;
         if (magnetTimer <= 0f)
         {
             isMagnetActive = false;
+
+            if (magnetVisual != null)
+                magnetVisual.SetActive(false);
 
             Debug.Log("Magnet ended.");
         }
@@ -175,7 +160,6 @@ public float InvincibilityTimeLeft => invincibilityTimer;
         if (invincibilityTimer <= 0f)
         {
             isInvincible = false;
-
             Debug.Log("Invincibility ended.");
         }
     }
@@ -191,12 +175,7 @@ public float InvincibilityTimeLeft => invincibilityTimer;
         }
 
         SpeedBoostCount--;
-
-        PlayerPrefs.SetInt(
-            "SpeedBoostCount",
-            SpeedBoostCount
-        );
-
+        PlayerPrefs.SetInt("SpeedBoostCount", SpeedBoostCount);
         PlayerPrefs.Save();
 
         isSpeedBoostActive = true;
@@ -205,8 +184,8 @@ public float InvincibilityTimeLeft => invincibilityTimer;
         ScrollSpeed += speedBoostAmount;
 
         Debug.Log("Speed Boost activated!");
-        FindFirstObjectByType<HUDManager>()
-    ?.PlaySpeedBoostEffect();
+
+        FindFirstObjectByType<HUDManager>()?.PlaySpeedBoostEffect();
     }
 
     public void ActivateMagnet()
@@ -220,20 +199,18 @@ public float InvincibilityTimeLeft => invincibilityTimer;
         }
 
         MagnetCount--;
-
-        PlayerPrefs.SetInt(
-            "MagnetCount",
-            MagnetCount
-        );
-
+        PlayerPrefs.SetInt("MagnetCount", MagnetCount);
         PlayerPrefs.Save();
 
         isMagnetActive = true;
         magnetTimer = magnetDuration;
 
+        if (magnetVisual != null)
+            magnetVisual.SetActive(true);
+
         Debug.Log("Magnet activated!");
-        FindFirstObjectByType<HUDManager>()
-    ?.PlayMagnetEffect();
+
+        FindFirstObjectByType<HUDManager>()?.PlayMagnetEffect();
     }
 
     public void ActivateInvincibility()
@@ -247,26 +224,20 @@ public float InvincibilityTimeLeft => invincibilityTimer;
         }
 
         InvincibilityCount--;
-
-        PlayerPrefs.SetInt(
-            "InvincibilityCount",
-            InvincibilityCount
-        );
-
+        PlayerPrefs.SetInt("InvincibilityCount", InvincibilityCount);
         PlayerPrefs.Save();
 
         isInvincible = true;
         invincibilityTimer = invincibilityDuration;
 
         Debug.Log("Invincibility activated!");
-        FindFirstObjectByType<HUDManager>()
-    ?.PlayInvincibilityEffect();
+
+        FindFirstObjectByType<HUDManager>()?.PlayInvincibilityEffect();
     }
 
     private void PullCoinsToPlayer()
     {
-        GameObject player =
-            GameObject.FindGameObjectWithTag("Player");
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
 
         if (player == null) return;
 
@@ -291,47 +262,33 @@ public float InvincibilityTimeLeft => invincibilityTimer;
     {
         if (IsGameOver) return;
 
+        if (magnetVisual != null)
+            magnetVisual.SetActive(false);
+
         if (isInvincible)
         {
-            Debug.Log(
-                "Game over ignored because player is invincible."
-            );
-
+            Debug.Log("Game over ignored because player is invincible.");
             return;
         }
 
         IsGameOver = true;
-
         ScrollSpeed = 0f;
 
-        int currentScore =
-            Mathf.FloorToInt(Distance);
+        int currentScore = Mathf.FloorToInt(Distance);
 
         if (currentScore > HighScore)
         {
             HighScore = currentScore;
-
-            PlayerPrefs.SetInt(
-                "HighScore",
-                HighScore
-            );
-
+            PlayerPrefs.SetInt("HighScore", HighScore);
             PlayerPrefs.Save();
 
-            Debug.Log(
-                "New High Score: " + HighScore
-            );
+            Debug.Log("New High Score: " + HighScore);
         }
 
-        Debug.Log(
-            "Game Over! Final Score: " +
-            Mathf.FloorToInt(Distance)
-        );
+        Debug.Log("Game Over! Final Score: " + Mathf.FloorToInt(Distance));
 
         if (gameOverPanel != null)
-        {
             gameOverPanel.SetActive(true);
-        }
     }
 
     public void AddCoin()
@@ -341,19 +298,12 @@ public float InvincibilityTimeLeft => invincibilityTimer;
 
         SaveTotalCoins();
 
-        Debug.Log(
-            "Run Coins: " + RunCoins +
-            " | Total Coins: " + TotalCoins
-        );
+        Debug.Log("Run Coins: " + RunCoins + " | Total Coins: " + TotalCoins);
     }
 
     private void SaveTotalCoins()
     {
-        PlayerPrefs.SetInt(
-            "TotalCoins",
-            TotalCoins
-        );
-
+        PlayerPrefs.SetInt("TotalCoins", TotalCoins);
         PlayerPrefs.Save();
     }
 }
