@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private Camera mainCamera;
     [SerializeField] private GameObject shieldVisual;
     [SerializeField] private GameObject magnetVisual;
 
@@ -21,6 +22,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameConfig config;
 
     [Header("Speed Boost Powerup")]
+    [SerializeField] private float normalFOV = 60f;
+[SerializeField] private float boostFOV = 75f;
+[SerializeField] private float fovSmoothSpeed = 6f;
     [SerializeField] private float speedBoostAmount = 8f;
     [SerializeField] private float speedBoostDuration = 5f;
 
@@ -117,22 +121,39 @@ public class GameManager : MonoBehaviour
         UpdateSpeedBoost();
         UpdateMagnet();
         UpdateInvincibility();
+        UpdateCameraFOV();
     }
+    private void UpdateCameraFOV()
+{
+    if (mainCamera == null) return;
 
-    private void UpdateSpeedBoost()
+    float targetFOV =
+        isSpeedBoostActive
+        ? boostFOV
+        : normalFOV;
+
+    mainCamera.fieldOfView = Mathf.Lerp(
+        mainCamera.fieldOfView,
+        targetFOV,
+        fovSmoothSpeed * Time.deltaTime
+    );
+}
+
+   private void UpdateSpeedBoost()
+{
+    if (!isSpeedBoostActive) return;
+
+    speedBoostTimer -= Time.deltaTime;
+
+    if (speedBoostTimer <= 0f)
     {
-        if (!isSpeedBoostActive) return;
+        isSpeedBoostActive = false;
 
-        speedBoostTimer -= Time.deltaTime;
+        ScrollSpeed = config.startSpeed;
 
-        if (speedBoostTimer <= 0f)
-        {
-            isSpeedBoostActive = false;
-            ScrollSpeed = Mathf.Min(ScrollSpeed, config.maxSpeed);
-            Debug.Log("Speed Boost ended.");
-        }
+        Debug.Log("Speed Boost ended.");
     }
-
+}
     private void UpdateMagnet()
     {
         if (!isMagnetActive) return;
