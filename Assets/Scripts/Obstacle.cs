@@ -8,6 +8,12 @@ public class Obstacle : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
+        if (GameManager.Instance.IsInvincible)
+        {
+            Debug.Log("Hit ignored because player is invincible.");
+            return;
+        }
+
         Collider obstacleCollider = GetComponent<Collider>();
         Collider playerCollider = other;
 

@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameConfig config;
 
     [Header("Speed Boost Powerup")]
     [SerializeField] private int speedBoostCost = 10;
@@ -25,7 +26,14 @@ public class GameManager : MonoBehaviour
     private bool isMagnetActive;
     private float magnetTimer;
 
-    [SerializeField] private GameConfig config;
+    [Header("Invincibility Powerup")]
+    [SerializeField] private int invincibilityCost = 20;
+    [SerializeField] private float invincibilityDuration = 5f;
+
+    private bool isInvincible;
+    private float invincibilityTimer;
+
+    public bool IsInvincible => isInvincible;
 
     public float ScrollSpeed { get; private set; }
     public float Distance { get; private set; }
@@ -68,18 +76,22 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // SPEED BOOST TEST KEY
         if (Keyboard.current != null &&
             Keyboard.current.bKey.wasPressedThisFrame)
         {
             ActivateSpeedBoost();
         }
 
-        // MAGNET TEST KEY
         if (Keyboard.current != null &&
             Keyboard.current.mKey.wasPressedThisFrame)
         {
             ActivateMagnet();
+        }
+
+        if (Keyboard.current != null &&
+            Keyboard.current.iKey.wasPressedThisFrame)
+        {
+            ActivateInvincibility();
         }
 
         float targetMaxSpeed =
@@ -94,37 +106,55 @@ public class GameManager : MonoBehaviour
 
         Distance += ScrollSpeed * Time.deltaTime;
 
-        // SPEED BOOST TIMER
-        if (isSpeedBoostActive)
+        UpdateSpeedBoost();
+        UpdateMagnet();
+        UpdateInvincibility();
+    }
+
+    private void UpdateSpeedBoost()
+    {
+        if (!isSpeedBoostActive) return;
+
+        speedBoostTimer -= Time.deltaTime;
+
+        if (speedBoostTimer <= 0f)
         {
-            speedBoostTimer -= Time.deltaTime;
+            isSpeedBoostActive = false;
 
-            if (speedBoostTimer <= 0f)
-            {
-                isSpeedBoostActive = false;
+            ScrollSpeed = Mathf.Min(
+                ScrollSpeed,
+                config.maxSpeed
+            );
 
-                ScrollSpeed = Mathf.Min(
-                    ScrollSpeed,
-                    config.maxSpeed
-                );
-
-                Debug.Log("Speed Boost ended.");
-            }
+            Debug.Log("Speed Boost ended.");
         }
+    }
 
-        // MAGNET TIMER
-        if (isMagnetActive)
+    private void UpdateMagnet()
+    {
+        if (!isMagnetActive) return;
+
+        magnetTimer -= Time.deltaTime;
+
+        PullCoinsToPlayer();
+
+        if (magnetTimer <= 0f)
         {
-            magnetTimer -= Time.deltaTime;
+            isMagnetActive = false;
+            Debug.Log("Magnet ended.");
+        }
+    }
 
-            PullCoinsToPlayer();
+    private void UpdateInvincibility()
+    {
+        if (!isInvincible) return;
 
-            if (magnetTimer <= 0f)
-            {
-                isMagnetActive = false;
+        invincibilityTimer -= Time.deltaTime;
 
-                Debug.Log("Magnet ended.");
-            }
+        if (invincibilityTimer <= 0f)
+        {
+            isInvincible = false;
+            Debug.Log("Invincibility ended.");
         }
     }
 
@@ -139,9 +169,7 @@ public class GameManager : MonoBehaviour
         }
 
         TotalCoins -= speedBoostCost;
-
-        PlayerPrefs.SetInt("TotalCoins", TotalCoins);
-        PlayerPrefs.Save();
+        SaveTotalCoins();
 
         isSpeedBoostActive = true;
         speedBoostTimer = speedBoostDuration;
@@ -162,14 +190,31 @@ public class GameManager : MonoBehaviour
         }
 
         TotalCoins -= magnetCost;
-
-        PlayerPrefs.SetInt("TotalCoins", TotalCoins);
-        PlayerPrefs.Save();
+        SaveTotalCoins();
 
         isMagnetActive = true;
         magnetTimer = magnetDuration;
 
         Debug.Log("Magnet activated!");
+    }
+
+    public void ActivateInvincibility()
+    {
+        if (isInvincible) return;
+
+        if (TotalCoins < invincibilityCost)
+        {
+            Debug.Log("Not enough coins for invincibility.");
+            return;
+        }
+
+        TotalCoins -= invincibilityCost;
+        SaveTotalCoins();
+
+        isInvincible = true;
+        invincibilityTimer = invincibilityDuration;
+
+        Debug.Log("Invincibility activated!");
     }
 
     private void PullCoinsToPlayer()
@@ -200,6 +245,12 @@ public class GameManager : MonoBehaviour
     {
         if (IsGameOver) return;
 
+        if (isInvincible)
+        {
+            Debug.Log("Game over ignored because player is invincible.");
+            return;
+        }
+
         IsGameOver = true;
         ScrollSpeed = 0f;
 
@@ -208,7 +259,6 @@ public class GameManager : MonoBehaviour
         if (currentScore > HighScore)
         {
             HighScore = currentScore;
-
             PlayerPrefs.SetInt("HighScore", HighScore);
             PlayerPrefs.Save();
 
@@ -231,12 +281,17 @@ public class GameManager : MonoBehaviour
         RunCoins++;
         TotalCoins++;
 
-        PlayerPrefs.SetInt("TotalCoins", TotalCoins);
-        PlayerPrefs.Save();
+        SaveTotalCoins();
 
         Debug.Log(
             "Run Coins: " + RunCoins +
             " | Total Coins: " + TotalCoins
         );
+    }
+
+    private void SaveTotalCoins()
+    {
+        PlayerPrefs.SetInt("TotalCoins", TotalCoins);
+        PlayerPrefs.Save();
     }
 }
