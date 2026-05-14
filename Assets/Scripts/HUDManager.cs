@@ -18,6 +18,9 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private TMP_Text highScoreText;
     [SerializeField] private TMP_Text coinText;
 
+    [Header("Powerup Effects")]
+    [SerializeField] private GameObject speedEffectOverlay;
+
     void Update()
     {
         if (GameManager.Instance == null) return;
@@ -31,15 +34,12 @@ public class HUDManager : MonoBehaviour
     {
         if (scoreText == null) return;
 
-        int score =
-            Mathf.FloorToInt(GameManager.Instance.Distance);
+        int score = Mathf.FloorToInt(GameManager.Instance.Distance);
 
-        scoreText.text =
-            "Score: " + score;
+        scoreText.text = "Score: " + score;
 
-        highScoreText.text =
-            "High Score: " +
-            GameManager.Instance.HighScore;
+        if (highScoreText != null)
+            highScoreText.text = "High Score: " + GameManager.Instance.HighScore;
     }
 
     private void UpdateCoinUI()
@@ -53,78 +53,66 @@ public class HUDManager : MonoBehaviour
             GameManager.Instance.TotalCoins;
     }
 
-   private void UpdatePowerupUI()
-{
-    // SPEED BOOST
-    if (GameManager.Instance.IsSpeedBoostActive)
+    private void UpdatePowerupUI()
     {
-        speedBoostAmountText.text =
-            GameManager.Instance
-                .SpeedBoostTimeLeft
-                .ToString("0.0") + "s";
-    }
-    else
-    {
-        speedBoostAmountText.text =
-            "x" +
-            GameManager.Instance.SpeedBoostCount;
-    }
+        // SPEED BOOST
+        if (GameManager.Instance.IsSpeedBoostActive)
+        {
+            speedBoostAmountText.text =
+                GameManager.Instance.SpeedBoostTimeLeft.ToString("0.0") + "s";
 
-    // MAGNET
-    if (GameManager.Instance.IsMagnetActive)
-    {
-        magnetAmountText.text =
-            GameManager.Instance
-                .MagnetTimeLeft
-                .ToString("0.0") + "s";
-    }
-    else
-    {
-        magnetAmountText.text =
-            "x" +
-            GameManager.Instance.MagnetCount;
-    }
+            if (speedEffectOverlay != null)
+                speedEffectOverlay.SetActive(true);
+        }
+        else
+        {
+            speedBoostAmountText.text =
+                "x" + GameManager.Instance.SpeedBoostCount;
 
-    // INVINCIBILITY
-    if (GameManager.Instance.IsInvincibilityActive)
-    {
-        invincibilityAmountText.text =
-            GameManager.Instance
-                .InvincibilityTimeLeft
-                .ToString("0.0") + "s";
+            if (speedEffectOverlay != null)
+                speedEffectOverlay.SetActive(false);
+        }
+
+        // MAGNET
+        if (GameManager.Instance.IsMagnetActive)
+        {
+            magnetAmountText.text =
+                GameManager.Instance.MagnetTimeLeft.ToString("0.0") + "s";
+        }
+        else
+        {
+            magnetAmountText.text =
+                "x" + GameManager.Instance.MagnetCount;
+        }
+
+        // INVINCIBILITY
+        if (GameManager.Instance.IsInvincibilityActive)
+        {
+            invincibilityAmountText.text =
+                GameManager.Instance.InvincibilityTimeLeft.ToString("0.0") + "s";
+        }
+        else
+        {
+            invincibilityAmountText.text =
+                "x" + GameManager.Instance.InvincibilityCount;
+        }
     }
-    else
-    {
-        invincibilityAmountText.text =
-            "x" +
-            GameManager.Instance.InvincibilityCount;
-    }
-}
 
     public void PlaySpeedBoostEffect()
     {
-        speedAnimator.Play(
-            "PowerupBounce",
-            0,
-            0f
-        );
+        if (speedAnimator != null)
+            speedAnimator.Play("PowerupBounce", 0, 0f);
     }
 
     public void PlayMagnetEffect()
     {
-        magnetAnimator.Play(
-            "PowerupBounce",
-            0,
-            0f
-        );
+        if (magnetAnimator != null)
+            magnetAnimator.Play("PowerupBounce", 0, 0f);
     }
 
     public void PlayInvincibilityEffect()
     {
-        invincibilityAnimator.Play(
-            "PowerupBounce",
-            0,
-            0f
-        );
+        if (invincibilityAnimator != null)
+            invincibilityAnimator.Play("PowerupBounce", 0, 0f);
     }
 }
