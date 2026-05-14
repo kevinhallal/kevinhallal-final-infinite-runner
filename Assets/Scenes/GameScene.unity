@@ -1688,6 +1688,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseManager
   pauseUI: {fileID: 9240395}
+  pauseButton: {fileID: 1820716920}
 --- !u!4 &1813401787
 Transform:
   m_ObjectHideFlags: 0
