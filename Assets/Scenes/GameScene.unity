@@ -1934,8 +1934,13 @@ MonoBehaviour:
   laneOffset: 2
   laneCount: 3
   laneSwitchSpeed: 14
-  jumpVelocity: 8
-  gravity: -25
+  jumpVelocity: 12
+  gravity: -22
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 8
+  groundCheckDistance: 3
+  groundedOffset: 0.05
 --- !u!54 &2020257607
 Rigidbody:
   m_ObjectHideFlags: 0
