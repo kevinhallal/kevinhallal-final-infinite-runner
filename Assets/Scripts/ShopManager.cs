@@ -3,67 +3,123 @@ using UnityEngine;
 
 public class ShopManager : MonoBehaviour
 {
+    [Header("UI")]
     [SerializeField] private TMP_Text totalCoinsText;
+    [SerializeField] private GameObject shopPanel;
 
-    private const int SpeedBoostCost = 10;
-    private const int MagnetCost = 15;
-    private const int InvincibilityCost = 20;
+    [Header("Costs")]
+    [SerializeField] private int speedBoostCost = 10;
+    [SerializeField] private int magnetCost = 15;
+    [SerializeField] private int invincibilityCost = 20;
 
-    private int totalCoins;
-
-    void OnEnable()
+    private void Update()
     {
-        LoadCoins();
-        UpdateUI();
+        if (totalCoinsText != null)
+        {
+            totalCoinsText.text =
+                "Coins: " +
+                GameManager.Instance.TotalCoins;
+        }
     }
 
-    private void LoadCoins()
+    public void OpenShop()
     {
-        totalCoins = PlayerPrefs.GetInt("TotalCoins", 0);
+        if (shopPanel != null)
+            shopPanel.SetActive(true);
+
+        SFXManager.Instance?.PlayShopOpen();
     }
 
-    private void SaveCoins()
+    public void CloseShop()
     {
-        PlayerPrefs.SetInt("TotalCoins", totalCoins);
-        PlayerPrefs.Save();
-    }
-
-    private void UpdateUI()
-    {
-        totalCoinsText.text = "" + totalCoins;
+        if (shopPanel != null)
+            shopPanel.SetActive(false);
     }
 
     public void BuySpeedBoost()
     {
-        BuyPowerup(SpeedBoostCost, "SpeedBoostCount");
-    }
-
-    public void BuyMagnet()
-    {
-        BuyPowerup(MagnetCost, "MagnetCount");
-    }
-
-    public void BuyInvincibility()
-    {
-        BuyPowerup(InvincibilityCost, "InvincibilityCount");
-    }
-
-    private void BuyPowerup(int cost, string key)
-    {
-        if (totalCoins < cost)
+        if (GameManager.Instance.TotalCoins < speedBoostCost)
         {
             Debug.Log("Not enough coins.");
             return;
         }
 
-        totalCoins -= cost;
+        GameManager.Instance.TotalCoins -= speedBoostCost;
 
-        int currentAmount = PlayerPrefs.GetInt(key, 0);
-        PlayerPrefs.SetInt(key, currentAmount + 1);
+        PlayerPrefs.SetInt(
+            "TotalCoins",
+            GameManager.Instance.TotalCoins
+        );
 
-        SaveCoins();
-        UpdateUI();
+        GameManager.Instance.SpeedBoostCount++;
 
-        Debug.Log("Bought " + key);
+        PlayerPrefs.SetInt(
+            "SpeedBoostCount",
+            GameManager.Instance.SpeedBoostCount
+        );
+
+        PlayerPrefs.Save();
+
+        SFXManager.Instance?.PlayPurchaseSuccess();
+
+        Debug.Log("Bought Speed Boost");
+    }
+
+    public void BuyMagnet()
+    {
+        if (GameManager.Instance.TotalCoins < magnetCost)
+        {
+            Debug.Log("Not enough coins.");
+            return;
+        }
+
+        GameManager.Instance.TotalCoins -= magnetCost;
+
+        PlayerPrefs.SetInt(
+            "TotalCoins",
+            GameManager.Instance.TotalCoins
+        );
+
+        GameManager.Instance.MagnetCount++;
+
+        PlayerPrefs.SetInt(
+            "MagnetCount",
+            GameManager.Instance.MagnetCount
+        );
+
+        PlayerPrefs.Save();
+
+        SFXManager.Instance?.PlayPurchaseSuccess();
+
+        Debug.Log("Bought Magnet");
+    }
+
+    public void BuyInvincibility()
+    {
+        if (GameManager.Instance.TotalCoins < invincibilityCost)
+        {
+            Debug.Log("Not enough coins.");
+            return;
+        }
+
+        GameManager.Instance.TotalCoins -= invincibilityCost;
+
+        PlayerPrefs.SetInt(
+            "TotalCoins",
+            GameManager.Instance.TotalCoins
+        );
+
+        GameManager.Instance.InvincibilityCount++;
+
+        PlayerPrefs.SetInt(
+            "InvincibilityCount",
+            GameManager.Instance.InvincibilityCount
+        );
+
+        PlayerPrefs.Save();
+
+        SFXManager.Instance?.PlayPurchaseSuccess();
+
+        Debug.Log("Bought Invincibility");
     }
 }

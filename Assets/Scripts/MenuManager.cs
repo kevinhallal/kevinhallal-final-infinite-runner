@@ -27,6 +27,7 @@ public void CloseSettings()
 public void OpenShop()
 {
     shopPanel.SetActive(true);
+    SFXManager.Instance?.PlayShopOpen();
 }
 
 public void CloseShop()

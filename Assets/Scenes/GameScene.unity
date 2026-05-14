@@ -1450,6 +1450,156 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dff46c129df2479fa560e1e7a97151a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Chunk
+--- !u!1 &638576719
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 638576722}
+  - component: {fileID: 638576721}
+  - component: {fileID: 638576720}
+  m_Layer: 0
+  m_Name: SFXManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &638576720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638576719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa9b06fa1f68d14f95a9a40afe5c37c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SFXManager
+  coinCollectSound: {fileID: 8300000, guid: 29bcaa4d3cff957409b9d8dc4e505f88, type: 3}
+  gameStartSound: {fileID: 8300000, guid: 59cca7a96f427bd4188c7f4967a07979, type: 3}
+  deathSound: {fileID: 8300000, guid: 18d636a1cbd5ac04184c407dca9323ca, type: 3}
+  invincibilitySound: {fileID: 8300000, guid: d122c2d5dd898f3458c82a11c3e1ddb7, type: 3}
+  magnetSound: {fileID: 8300000, guid: 4d68a494c9aa3c148a4e2653f97e1cee, type: 3}
+  speedBoostSound: {fileID: 8300000, guid: 596abc26d806d3743b1429351a191757, type: 3}
+  shopOpenSound: {fileID: 8300000, guid: c943e46af46497547b8c504ffd3ce66d, type: 3}
+  purchaseSuccessSound: {fileID: 8300000, guid: 27fd97fe4b89c164d8bf261ffdd5b9e8, type: 3}
+--- !u!82 &638576721
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638576719}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 2735389345025436269, guid: 8359faf211a990a448679a4369208160, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &638576722
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638576719}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 957.96954, y: -0.00001, z: 1409.1396}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1842,16 +1992,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cda62b5757e244d5935ceae77ce2867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  mainCamera: {fileID: 330585545}
-  shieldVisual: {fileID: 1646869899}
   magnetVisual: {fileID: 1195278417}
+  shieldVisual: {fileID: 1646869899}
   gameOverPanel: {fileID: 1200342117}
   config: {fileID: 11400000, guid: 75ea4c543ed1047279c376078ae72761, type: 2}
+  mainCamera: {fileID: 330585545}
+  speedBoostAmount: 8
+  speedBoostDuration: 5
   normalFOV: 60
   boostFOV: 75
   fovSmoothSpeed: 6
-  speedBoostAmount: 8
-  speedBoostDuration: 5
   magnetDuration: 6
   magnetRadius: 6
   magnetPullSpeed: 12
@@ -3423,7 +3573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1173de3ccca88bd4a8cc2ae13d9e6496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseManager
-  pauseUI: {fileID: 9240395}
+  pauseUI: {fileID: 856127471}
   pauseButton: {fileID: 1820716920}
 --- !u!4 &1813401787
 Transform:
@@ -4571,3 +4721,4 @@ SceneRoots:
   - {fileID: 288947797}
   - {fileID: 1813401787}
   - {fileID: 1137624633}
+  - {fileID: 638576722}

@@ -4,9 +4,11 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private Camera mainCamera;
-    [SerializeField] private GameObject shieldVisual;
     [SerializeField] private GameObject magnetVisual;
+    [SerializeField] private GameObject shieldVisual;
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameConfig config;
+    [SerializeField] private Camera mainCamera;
 
     public bool IsSpeedBoostActive => isSpeedBoostActive;
     public bool IsMagnetActive => isMagnetActive;
@@ -18,15 +20,12 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
-    [SerializeField] private GameObject gameOverPanel;
-    [SerializeField] private GameConfig config;
-
     [Header("Speed Boost Powerup")]
-    [SerializeField] private float normalFOV = 60f;
-[SerializeField] private float boostFOV = 75f;
-[SerializeField] private float fovSmoothSpeed = 6f;
     [SerializeField] private float speedBoostAmount = 8f;
     [SerializeField] private float speedBoostDuration = 5f;
+    [SerializeField] private float normalFOV = 60f;
+    [SerializeField] private float boostFOV = 75f;
+    [SerializeField] private float fovSmoothSpeed = 6f;
 
     private bool isSpeedBoostActive;
     private float speedBoostTimer;
@@ -51,26 +50,24 @@ public class GameManager : MonoBehaviour
     public float Distance { get; private set; }
 
     public int RunCoins { get; private set; }
-    public int TotalCoins { get; private set; }
+   public int TotalCoins { get; set; }
 
-    public int SpeedBoostCount { get; private set; }
-    public int MagnetCount { get; private set; }
-    public int InvincibilityCount { get; private set; }
-
+public int SpeedBoostCount { get; set; }
+public int MagnetCount { get; set; }
+public int InvincibilityCount { get; set; }
     public bool IsGameOver { get; private set; }
 
     public int HighScore { get; private set; }
 
     void Awake()
     {
-        if (shieldVisual != null)
-    shieldVisual.SetActive(false);
-    
         if (magnetVisual != null)
             magnetVisual.SetActive(false);
 
-        TotalCoins = PlayerPrefs.GetInt("TotalCoins", 0);
+        if (shieldVisual != null)
+            shieldVisual.SetActive(false);
 
+        TotalCoins = PlayerPrefs.GetInt("TotalCoins", 0);
         SpeedBoostCount = PlayerPrefs.GetInt("SpeedBoostCount", 0);
         MagnetCount = PlayerPrefs.GetInt("MagnetCount", 0);
         InvincibilityCount = PlayerPrefs.GetInt("InvincibilityCount", 0);
@@ -84,6 +81,11 @@ public class GameManager : MonoBehaviour
         Instance = this;
         ScrollSpeed = config.startSpeed;
         HighScore = PlayerPrefs.GetInt("HighScore", 0);
+    }
+
+    void Start()
+    {
+        SFXManager.Instance?.PlayGameStart();
     }
 
     void Update()
@@ -123,37 +125,21 @@ public class GameManager : MonoBehaviour
         UpdateInvincibility();
         UpdateCameraFOV();
     }
-    private void UpdateCameraFOV()
-{
-    if (mainCamera == null) return;
 
-    float targetFOV =
-        isSpeedBoostActive
-        ? boostFOV
-        : normalFOV;
-
-    mainCamera.fieldOfView = Mathf.Lerp(
-        mainCamera.fieldOfView,
-        targetFOV,
-        fovSmoothSpeed * Time.deltaTime
-    );
-}
-
-   private void UpdateSpeedBoost()
-{
-    if (!isSpeedBoostActive) return;
-
-    speedBoostTimer -= Time.deltaTime;
-
-    if (speedBoostTimer <= 0f)
+    private void UpdateSpeedBoost()
     {
-        isSpeedBoostActive = false;
+        if (!isSpeedBoostActive) return;
 
-        ScrollSpeed = config.startSpeed;
+        speedBoostTimer -= Time.deltaTime;
 
-        Debug.Log("Speed Boost ended.");
+        if (speedBoostTimer <= 0f)
+        {
+            isSpeedBoostActive = false;
+            ScrollSpeed = config.startSpeed;
+            Debug.Log("Speed Boost ended.");
+        }
     }
-}
+
     private void UpdateMagnet()
     {
         if (!isMagnetActive) return;
@@ -162,7 +148,6 @@ public class GameManager : MonoBehaviour
             magnetVisual.SetActive(true);
 
         magnetTimer -= Time.deltaTime;
-
         PullCoinsToPlayer();
 
         if (magnetTimer <= 0f)
@@ -184,11 +169,26 @@ public class GameManager : MonoBehaviour
 
         if (invincibilityTimer <= 0f)
         {
-            if (shieldVisual != null)
-    shieldVisual.SetActive(false);
             isInvincible = false;
+
+            if (shieldVisual != null)
+                shieldVisual.SetActive(false);
+
             Debug.Log("Invincibility ended.");
         }
+    }
+
+    private void UpdateCameraFOV()
+    {
+        if (mainCamera == null) return;
+
+        float targetFOV = isSpeedBoostActive ? boostFOV : normalFOV;
+
+        mainCamera.fieldOfView = Mathf.Lerp(
+            mainCamera.fieldOfView,
+            targetFOV,
+            fovSmoothSpeed * Time.deltaTime
+        );
     }
 
     public void ActivateSpeedBoost()
@@ -209,6 +209,8 @@ public class GameManager : MonoBehaviour
         speedBoostTimer = speedBoostDuration;
 
         ScrollSpeed += speedBoostAmount;
+
+        SFXManager.Instance?.PlaySpeedBoost();
 
         Debug.Log("Speed Boost activated!");
 
@@ -235,6 +237,8 @@ public class GameManager : MonoBehaviour
         if (magnetVisual != null)
             magnetVisual.SetActive(true);
 
+        SFXManager.Instance?.PlayMagnet();
+
         Debug.Log("Magnet activated!");
 
         FindFirstObjectByType<HUDManager>()?.PlayMagnetEffect();
@@ -258,7 +262,9 @@ public class GameManager : MonoBehaviour
         invincibilityTimer = invincibilityDuration;
 
         if (shieldVisual != null)
-    shieldVisual.SetActive(true);
+            shieldVisual.SetActive(true);
+
+        SFXManager.Instance?.PlayInvincibility();
 
         Debug.Log("Invincibility activated!");
 
@@ -290,13 +296,13 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        if (shieldVisual != null)
-    shieldVisual.SetActive(false);
-
         if (IsGameOver) return;
 
         if (magnetVisual != null)
             magnetVisual.SetActive(false);
+
+        if (shieldVisual != null)
+            shieldVisual.SetActive(false);
 
         if (isInvincible)
         {
@@ -306,6 +312,8 @@ public class GameManager : MonoBehaviour
 
         IsGameOver = true;
         ScrollSpeed = 0f;
+
+        SFXManager.Instance?.PlayDeath();
 
         int currentScore = Mathf.FloorToInt(Distance);
 
@@ -330,6 +338,8 @@ public class GameManager : MonoBehaviour
         TotalCoins++;
 
         SaveTotalCoins();
+
+        SFXManager.Instance?.PlayCoinCollect();
 
         Debug.Log("Run Coins: " + RunCoins + " | Total Coins: " + TotalCoins);
     }
