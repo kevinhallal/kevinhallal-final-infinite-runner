@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
+    [SerializeField] private GameObject shopPanel;
     [SerializeField] private GameObject settingsPanel;
     public void PlayGame()
     {
@@ -22,5 +23,14 @@ public class MenuManager : MonoBehaviour
 public void CloseSettings()
 {
     settingsPanel.SetActive(false);
+}
+public void OpenShop()
+{
+    shopPanel.SetActive(true);
+}
+
+public void CloseShop()
+{
+    shopPanel.SetActive(false);
 }
 }
