@@ -4,6 +4,13 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
+    public bool IsSpeedBoostActive => isSpeedBoostActive;
+public bool IsMagnetActive => isMagnetActive;
+public bool IsInvincibilityActive => isInvincible;
+
+public float SpeedBoostTimeLeft => speedBoostTimer;
+public float MagnetTimeLeft => magnetTimer;
+public float InvincibilityTimeLeft => invincibilityTimer;
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private GameObject gameOverPanel;
