@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private GameObject gameOverPanel;
     public static GameManager Instance { get; private set; }
 
     [Header("Powerups")]
@@ -139,6 +140,10 @@ public class GameManager : MonoBehaviour
             "Game Over! Final Score: " +
             Mathf.FloorToInt(Distance)
         );
+        if (gameOverPanel != null)
+        {
+         gameOverPanel.SetActive(true);
+                }
     }
 
     public void AddCoin()
