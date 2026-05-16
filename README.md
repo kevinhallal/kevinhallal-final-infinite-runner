@@ -1,3 +1,6 @@
+Kevin Hallal
+20234796
+
 # Metro Mashalla
 
 Metro Mashalla is an infinite runner game inspired by Subway Surfers but with an Arab-inspired aesthetic and gameplay style. The player runs endlessly through streamed chunks while avoiding obstacles, collecting coins, and using powerups to survive longer and beat their high score.
